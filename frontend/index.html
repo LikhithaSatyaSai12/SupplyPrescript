@@ -1,23 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SupplyPrescript</title>
-    <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SupplyPrescript</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<h1>SupplyPrescript</h1>
+<div class="container">
 
-<input id="distance" placeholder="Distance">
+<header>
 
-<input id="lead" placeholder="Lead Time">
+<h1>🚚 SupplyPrescript</h1>
 
-<button onclick="predict()">Predict</button>
+<p>AI Powered Supply Chain Optimization Dashboard</p>
 
-<h2 id="result"></h2>
+</header>
+
+
+<div class="dashboard">
+
+<div class="left-panel">
+
+<h2>Shipment Details</h2>
+
+<label>Shipment ID</label>
+<input type="number" id="shipment">
+
+<label>Supplier</label>
+
+<select id="supplier">
+
+<option>Supplier A</option>
+<option>Supplier B</option>
+<option>Supplier C</option>
+<option>Supplier D</option>
+
+</select>
+
+
+<label>Distance (KM)</label>
+<input type="number" id="distance">
+
+
+<label>Lead Time (Days)</label>
+<input type="number" id="lead">
+
+
+<label>Weather</label>
+
+<select id="weather">
+
+<option>Clear</option>
+<option>Cloudy</option>
+<option>Rain</option>
+<option>Storm</option>
+
+</select>
+
+
+<label>Inventory</label>
+<input type="number" id="inventory">
+
+
+<label>Transport Cost</label>
+<input type="number" id="cost">
+
+
+<button onclick="predictDelay()">
+
+Predict Delay
+
+</button>
+
+</div>
+
+
+
+<div class="right-panel">
+
+
+<div class="card">
+
+<h2>Prediction</h2>
+
+<h3 id="prediction">
+
+No Prediction
+
+</h3>
+
+<p id="risk">
+
+Risk Level
+
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Optimization Recommendation</h2>
+
+<ul>
+
+<li id="supplierRec">
+
+Best Supplier :
+
+</li>
+
+<li id="routeRec">
+
+Recommended Route :
+
+</li>
+
+<li id="savingRec">
+
+Estimated Savings :
+
+</li>
+
+<li id="inventoryRec">
+
+Inventory Action :
+
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>

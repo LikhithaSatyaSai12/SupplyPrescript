@@ -3,8 +3,9 @@ from pydantic import BaseModel
 import pandas as pd
 import joblib
 
-app = FastAPI()
+app = FastAPI(title="SupplyPrescript Backend")
 
+# Load trained model
 model = joblib.load("model/model.pkl")
 
 class Shipment(BaseModel):
@@ -18,15 +19,17 @@ class Shipment(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "SupplyPrescript API Running"}
+    return {
+        "message": "SupplyPrescript API Running"
+    }
 
 @app.post("/predict")
 def predict(data: Shipment):
 
-    df = pd.DataFrame([data.dict()])
+    df = pd.DataFrame([data.model_dump()])
 
     prediction = model.predict(df)
 
     return {
-        "Delay Prediction": int(prediction[0])
+        "Predicted Delay": int(prediction[0])
     }
