@@ -1,51 +1,35 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import accuracy_score, classification_report
-from xgboost import XGBClassifier
-import joblib
+import numpy as np
 
-print("Loading dataset...")
+# Set seed for reproducibility
+np.random.seed(42)
 
-# Load dataset
-df = pd.read_csv("data/raw/supply_chain.csv")
+n = 1000
 
-# Encode categorical columns
-supplier_encoder = LabelEncoder()
-weather_encoder = LabelEncoder()
+suppliers = ["SupplierA", "SupplierB", "SupplierC", "SupplierD", "SupplierE"]
+weather = ["Clear", "Cloudy", "Rain", "Storm"]
 
-df["Supplier"] = supplier_encoder.fit_transform(df["Supplier"])
-df["Weather"] = weather_encoder.fit_transform(df["Weather"])
+data = {
+    "Shipment_ID": range(1, n + 1),
+    "Supplier": np.random.choice(suppliers, n),
+    "Distance": np.random.randint(50, 1000, n),
+    "Lead_Time": np.random.randint(1, 15, n),
+    "Weather": np.random.choice(weather, n),
+    "Inventory": np.random.randint(50, 500, n),
+    "Transport_Cost": np.random.randint(3000, 25000, n),
+}
 
-# Features and target
-X = df.drop("Delayed", axis=1)
-y = df["Delayed"]
+df = pd.DataFrame(data)
 
-# Split dataset
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+# Create delay condition
+df["Delayed"] = (
+    (df["Distance"] > 600) |
+    (df["Lead_Time"] > 8) |
+    (df["Weather"].isin(["Rain", "Storm"]))
+).astype(int)
 
-# Train model
-model = XGBClassifier(
-    n_estimators=100,
-    max_depth=4,
-    learning_rate=0.1,
-    random_state=42
-)
+# Save dataset
+df.to_csv("data/raw/supply_chain.csv", index=False)
 
-model.fit(X_train, y_train)
-
-# Predict
-predictions = model.predict(X_test)
-
-# Evaluate
-accuracy = accuracy_score(y_test, predictions)
-
-print("Accuracy:", accuracy)
-print(classification_report(y_test, predictions))
-
-# Save model
-joblib.dump(model, "model/model.pkl")
-
-print("Model saved successfully!")
+print("Dataset created successfully!")
+print(df.head())
