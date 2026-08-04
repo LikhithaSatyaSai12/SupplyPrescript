@@ -1,24 +1,32 @@
-// Update Date & Time
+// =========================
+// Live Date & Time
+// =========================
 function updateDateTime() {
+
     const now = new Date();
+
     document.getElementById("datetime").innerHTML =
         "📅 " + now.toLocaleString();
+
 }
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
 
 
+// =========================
 // Prediction Function
+// =========================
 function predictDelay() {
 
-    // Show loading
+    // Loading Animation
     document.getElementById("prediction").innerHTML = "⏳ Predicting...";
     document.getElementById("risk").innerHTML = "--";
 
     setTimeout(() => {
 
         let shipment = document.getElementById("shipment").value;
+        let selectedSupplier = document.getElementById("supplier").value;
         let distance = parseInt(document.getElementById("distance").value);
         let lead = parseInt(document.getElementById("lead").value);
         let weather = document.getElementById("weather").value;
@@ -33,12 +41,14 @@ function predictDelay() {
             isNaN(inventory) ||
             isNaN(cost)
         ) {
+
             alert("Please fill all fields before prediction.");
 
             document.getElementById("prediction").innerHTML = "No Prediction";
             document.getElementById("risk").innerHTML = "--";
 
             return;
+
         }
 
         let prediction = "";
@@ -49,6 +59,7 @@ function predictDelay() {
         let inventoryAction = "";
 
         // Prediction Logic
+
         if (distance > 600 || lead > 8 || weather === "Storm") {
 
             prediction = "Delay Expected";
@@ -86,6 +97,7 @@ function predictDelay() {
         }
 
         // Display Results
+
         document.getElementById("prediction").innerHTML = prediction;
         document.getElementById("risk").innerHTML = risk;
 
@@ -101,12 +113,32 @@ function predictDelay() {
         document.getElementById("inventoryRec").innerHTML =
             "📦 Inventory Action : " + inventoryAction;
 
+
+        // =========================
+        // Shipment History
+        // =========================
+
+        let tableBody = document
+            .getElementById("historyTable")
+            .getElementsByTagName("tbody")[0];
+
+        let row = tableBody.insertRow();
+
+        row.insertCell(0).innerHTML = shipment;
+        row.insertCell(1).innerHTML = selectedSupplier;
+        row.insertCell(2).innerHTML = prediction;
+        row.insertCell(3).innerHTML = risk;
+
     }, 1000);
 
 }
 
 
+
+// =========================
 // Reset Function
+// =========================
+
 function resetForm() {
 
     document.getElementById("shipment").value = "";
@@ -130,5 +162,12 @@ function resetForm() {
 
     document.getElementById("inventoryRec").innerHTML =
         "📦 Inventory Action : --";
+
+    // Clear History Table
+
+    document
+        .getElementById("historyTable")
+        .getElementsByTagName("tbody")[0]
+        .innerHTML = "";
 
 }
