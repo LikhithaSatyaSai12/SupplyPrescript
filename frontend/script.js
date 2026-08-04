@@ -1,5 +1,6 @@
 function predictDelay() {
 
+    let shipment = document.getElementById("shipment").value;
     let distance = parseInt(document.getElementById("distance").value);
     let lead = parseInt(document.getElementById("lead").value);
     let weather = document.getElementById("weather").value;
@@ -8,12 +9,13 @@ function predictDelay() {
 
     // Validate inputs
     if (
+        shipment.trim() === "" ||
         isNaN(distance) ||
         isNaN(lead) ||
         isNaN(inventory) ||
         isNaN(cost)
     ) {
-        alert("Please fill all fields.");
+        alert("Please fill all fields before prediction.");
         return;
     }
 
@@ -24,8 +26,8 @@ function predictDelay() {
     let saving = "";
     let inventoryAction = "";
 
-    // Simple prediction logic
-    if (distance > 600 || lead > 8 || weather == "Storm") {
+    // Prediction Logic
+    if (distance > 600 || lead > 8 || weather === "Storm") {
 
         prediction = "Delay Expected";
         risk = "🔴 High Risk";
@@ -36,7 +38,7 @@ function predictDelay() {
         inventoryAction = "Increase Safety Stock";
 
     }
-    else if (distance > 350 || weather == "Rain") {
+    else if (distance > 350 || weather === "Rain") {
 
         prediction = "Possible Delay";
         risk = "🟡 Medium Risk";
@@ -59,7 +61,7 @@ function predictDelay() {
 
     }
 
-    // Update dashboard
+    // Display Results
     document.getElementById("prediction").innerHTML = prediction;
     document.getElementById("risk").innerHTML = risk;
 
@@ -74,4 +76,30 @@ function predictDelay() {
 
     document.getElementById("inventoryRec").innerHTML =
         "📦 Inventory Action : " + inventoryAction;
+}
+
+// Reset Function
+function resetForm() {
+
+    document.getElementById("shipment").value = "";
+    document.getElementById("distance").value = "";
+    document.getElementById("lead").value = "";
+    document.getElementById("weather").selectedIndex = 0;
+    document.getElementById("inventory").value = "";
+    document.getElementById("cost").value = "";
+
+    document.getElementById("prediction").innerHTML = "No Prediction";
+    document.getElementById("risk").innerHTML = "--";
+
+    document.getElementById("supplierRec").innerHTML =
+        "✅ Best Supplier : --";
+
+    document.getElementById("routeRec").innerHTML =
+        "🚚 Recommended Route : --";
+
+    document.getElementById("savingRec").innerHTML =
+        "💰 Estimated Savings : --";
+
+    document.getElementById("inventoryRec").innerHTML =
+        "📦 Inventory Action : --";
 }
